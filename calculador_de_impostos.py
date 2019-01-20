@@ -1,17 +1,34 @@
 # -*- coding: UTF-8 -*-
+from impostos import ISS, ICMS, ICPP, IKCV
 
 class Calculador_de_impostos(object):
-	def realiza_calculo(self, orcamento, importo):
-		icms_calculado = importo(orcamento)
-		print(icms_calculado)
+
+	def realiza_calculo(self, orcamento, imposto):
+		imposto_calculado = imposto.calcula(orcamento)
+		print (imposto_calculado)
+
 
 if __name__ == '__main__':
-	from orcamento import Orcamento
-	from impostos import calcula_ICMS, calcula_ISS
 
-	orcamento = Orcamento(500.0)
+	from orcamento import Orcamento, Item
 
-	calculador_de_impostos = Calculador_de_impostos()
+	calculador = Calculador_de_impostos()
 
-	calculador_de_impostos.realiza_calculo(orcamento, calcula_ISS)
-	calculador_de_impostos.realiza_calculo(orcamento, calcula_ICMS)
+	orcamento = Orcamento()
+	orcamento.adiciona_item(Item('ITEM 1', 50))
+	orcamento.adiciona_item(Item('ITEM 2', 200))
+	orcamento.adiciona_item(Item('ITEM 3', 250))
+
+	print('ISS e ICMS')
+	calculador.realiza_calculo(orcamento, ISS())
+	calculador.realiza_calculo(orcamento, ICMS())
+
+	print('ISS com ICMS')
+	calculador.realiza_calculo(orcamento, ICMS(ISS()))
+
+	print('ICPP e IKCV')
+	calculador.realiza_calculo(orcamento, ICPP())
+	calculador.realiza_calculo(orcamento, IKCV())
+
+	print('ICPP com IKCV')
+	calculador.realiza_calculo(orcamento, IKCV(ICPP()))
